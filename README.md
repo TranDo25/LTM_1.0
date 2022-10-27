@@ -9,3 +9,21 @@
 * b2: (làm tại hai máy) vào control panel->network and internet-> network and sharing center-> changes advance sharing setting-> tại all network chọn như sau:
  ![image](https://user-images.githubusercontent.com/73243952/198181657-9f221454-32e3-48bd-9c0d-c00d907aa4fa.png)
 * b3:  kiểm tra ping thông bằng cmd trên 2 máy
+# các chức năng chính:
+## client: 
+* đăng nhập
+* đăng kí
+* xem thông  tin của người chơi
+* chat tổng
+* chat cá nhân và call với đối thủ
+* tạo phòng chơi 
+* tìm phòng
+* kết bạn
+* xem xếp hạng
+* xem danh sách bạn bè
+## server:
+* hiển thị thông tin luồng 
+* xem danh sách phòng đang mở
+* chat tổng
+* phát thông báo
+* cảnh cáo và ban
