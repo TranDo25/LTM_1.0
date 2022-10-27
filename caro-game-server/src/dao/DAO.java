@@ -13,7 +13,7 @@ import java.sql.*;
  */
 public class DAO {
     protected Connection con;
-
+//kết nối thông tin đến cơ sở dữ liệu
     public DAO() {
         String jdbcURL = "jdbc:mysql://localhost:3306/caro";
         String jdbcUsername = "root";

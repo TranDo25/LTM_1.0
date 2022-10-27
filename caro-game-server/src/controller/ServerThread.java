@@ -73,27 +73,32 @@ public class ServerThread implements Runnable {
         userDAO = new UserDAO();
         isClosed = false;
         room = null;
+        //kiểm tra nếu client đang là locel host thì cập nhật IP local, nếu không phải thì lấy IP hiện thời
         //Trường hợp test máy ở server sẽ lỗi do hostaddress là localhost
         if(this.socketOfServer.getInetAddress().getHostAddress().equals("127.0.0.1")){
             clientIP = "127.0.0.1";
         }
         else{
             clientIP = this.socketOfServer.getInetAddress().getHostAddress();
+            System.out.println(this.socketOfServer.getInetAddress().getHostAddress());
         }
         
     }
+    //lấy ra thông tin của user
     public String getStringFromUser(User user1){
         return ""+user1.getID()+","+user1.getUsername()
                                 +","+user1.getPassword()+","+user1.getNickname()+","+
                                 user1.getAvatar()+","+user1.getNumberOfGame()+","+
                                 user1.getNumberOfwin()+","+user1.getNumberOfDraw()+","+user1.getRank();
     }
+    //các hàm ghi ra luồng
     
+    //luồng của phòng riêng
     public void goToOwnRoom() throws IOException{
         write("go-to-room," + room.getID()+","+room.getCompetitor(this.getClientNumber()).getClientIP()+",1,"+getStringFromUser(room.getCompetitor(this.getClientNumber()).getUser()));
         room.getCompetitor(this.clientNumber).write("go-to-room," + room.getID()+","+this.clientIP+",0,"+getStringFromUser(user));
     }
-    
+    //luồng phòng đối thủ
     public void goToPartnerRoom() throws IOException{
         write("go-to-room," + room.getID()+","+room.getCompetitor(this.getClientNumber()).getClientIP()+",0,"+getStringFromUser(room.getCompetitor(this.getClientNumber()).getUser()));
          room.getCompetitor(this.clientNumber).write("go-to-room,"+ room.getID()+","+this.clientIP+",1,"+getStringFromUser(user));
@@ -106,6 +111,7 @@ public class ServerThread implements Runnable {
             is = new BufferedReader(new InputStreamReader(socketOfServer.getInputStream()));
             os = new BufferedWriter(new OutputStreamWriter(socketOfServer.getOutputStream()));
             System.out.println("Khời động luông mới thành công, ID là: " + clientNumber);
+            //ghi ra luồng thông điệp
             write("server-send-id" + "," + this.clientNumber);
             String message;
             while (!isClosed) {
@@ -149,6 +155,7 @@ public class ServerThread implements Runnable {
                        User userRegistered = userDAO.verifyUser(userRegister);
                        this.user = userRegistered;
                        userDAO.updateToOnline(this.user.getID());
+                       //server gửi thông báo tổng đến tất cả các luôngf
                        Server.serverThreadBus.boardCast(clientNumber, "chat-server,"+this.user.getNickname()+" đang online");
                        write("login-success,"+getStringFromUser(this.user));
                    }
@@ -156,7 +163,9 @@ public class ServerThread implements Runnable {
                 //Xử lý người chơi đăng xuất
                 if(messageSplit[0].equals("offline")){
                     userDAO.updateToOffline(this.user.getID());
+                    //luồng admin nhận được thông báo
                     Server.admin.addMessage("["+user.getID()+"] "+user.getNickname()+" đã offline");
+                    //tất cả luồng khác cũng nhận được thông báo 
                     Server.serverThreadBus.boardCast(clientNumber, "chat-server,"+this.user.getNickname()+" đã offline");
                     this.user=null;
                 }
@@ -168,24 +177,30 @@ public class ServerThread implements Runnable {
                         res += friend.getID() + "," + friend.getNickname()+"," + (friend.getIsOnline()==true?1:0) +"," + (friend.getIsPlaying()==true?1:0)+",";
                     }
                     System.out.println(res);
+                    //ghi ra luồng danh sách friend để trả về cho client
                     write(res);
                 }
                 //Xử lý chat toàn server
                 if(messageSplit[0].equals("chat-server")){
+                    // quảng bá ra cho toàn bộ luồng
                     Server.serverThreadBus.boardCast(clientNumber,messageSplit[0]+","+ user.getNickname()+" : "+ messageSplit[1]);
                     Server.admin.addMessage("["+user.getID()+"] "+user.getNickname()+" : "+ messageSplit[1]);
                 }
                 //Xử lý vào phòng trong chức năng tìm kiếm phòng
                 if(messageSplit[0].equals("go-to-room")){
+                    //tên phòng
                     int roomName = Integer.parseInt(messageSplit[1]);
                     boolean isFinded = false;
+                    //duyệt danh sách các luongf, kiểm tra phòng tại mỗi luồng
                     for (ServerThread serverThread : Server.serverThreadBus.getListServerThreads()) {
                         if(serverThread.getRoom()!=null&&serverThread.getRoom().getID()==roomName){
                             isFinded = true;
+                            //kiểm tra phòng đã đầy hay chưa
                             if(serverThread.getRoom().getNumberOfUser()==2){
                                 write("room-fully,");
                             }
                             else{
+                                //lấy ra luồng
                                 if(serverThread.getRoom().getPassword()==null||serverThread.getRoom().getPassword().equals(messageSplit[2])){
                                     this.room = serverThread.getRoom();
                                     room.setUser2(this);
@@ -194,12 +209,14 @@ public class ServerThread implements Runnable {
                                     goToPartnerRoom();
                                 }
                                 else{
+                                    //ghi ra socket thông điệp sai mật khẩu
                                     write("room-wrong-password,");
                                 }
                             }
                             break;
                         }
                     }
+                    //nếu không tìm thấy thì ghi ra luồng thông điệp không tìm được phòng
                     if(!isFinded){
                         write("room-not-found,");
                     }
@@ -322,6 +339,7 @@ public class ServerThread implements Runnable {
                     Server.serverThreadBus.sendMessageToUserID(Integer.parseInt(messageSplit[1]),message);
                 }
                 //Xử lý khi người chơi đánh 1 nước
+                //lần lượt trả vè các thông điệp tương tác từ 2 user
                 if(messageSplit[0].equals("caro")){
                     room.getCompetitor(clientNumber).write(message);
                 }
@@ -393,7 +411,7 @@ public class ServerThread implements Runnable {
 
         }
     }
-
+//thiết lập hàm write để xử lí thông điệp ghi ra luồng
     public void write(String message) throws IOException {
         os.write(message);
         os.newLine();

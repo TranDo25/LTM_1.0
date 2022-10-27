@@ -26,11 +26,13 @@ public class Server {
     public static volatile Admin admin;
 
     public static void main(String[] args) {
+        //lắng nghe luồng 
         ServerSocket listener = null;
+        //tạo bus 
         serverThreadBus = new ServerThreadBus();
         System.out.println("Server is waiting to accept user...");
         int clientNumber = 0;
-        ID_room = 100;
+        ID_room = 100;  
         
         try {
             listener = new ServerSocket(7777);
@@ -38,6 +40,7 @@ public class Server {
             System.out.println(e);
             System.exit(1);
         }
+        //cần nghiên cứu thêm về cái này
         ThreadPoolExecutor executor = new ThreadPoolExecutor(
                 10, // corePoolSize
                 100, // maximumPoolSize
@@ -51,11 +54,17 @@ public class Server {
             while (true) {
                 // Chấp nhận một yêu cầu kết nối từ phía Client.
                 // Đồng thời nhận được một đối tượng Socket tại server.
+                // lắng nghe  tín hiệu kết nối
                 socketOfServer = listener.accept();
+                //lấy địa chỉ IP và địa chi host
                 System.out.println(socketOfServer.getInetAddress().getHostAddress());
+                //nạp thêm  luồng vào máy, sau đó tăng số client lên
                 ServerThread serverThread = new ServerThread(socketOfServer, clientNumber++);
+                //bus sẽ add thêm luồng nữa
                 serverThreadBus.add(serverThread);
+                //in ra số luồng đang chạy
                 System.out.println("Số thread đang chạy là: "+serverThreadBus.getLength());
+                //pool sẽ chạy luồng này
                 executor.execute(serverThread);  
             }
         } catch (IOException ex) {

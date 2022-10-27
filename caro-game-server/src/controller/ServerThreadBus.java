@@ -16,8 +16,9 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class ServerThreadBus {
+    //danh sách luồng
     private List<ServerThread> listServerThreads;
-
+//hàm lấy ra danh sách luồng
     public List<ServerThread> getListServerThreads() {
         return listServerThreads;
     }
@@ -25,11 +26,11 @@ public class ServerThreadBus {
     public ServerThreadBus() {
         listServerThreads = new ArrayList<>();
     }
-
+//hàm add luồng
     public void add(ServerThread serverThread){
         listServerThreads.add(serverThread);
     }
-    
+    //duyệt từng luồng, lần lượt gửi thông điệp đến tất cả các luồng
     public void mutilCastSend(String message){ //like sockets.emit in socket.io
         for(ServerThread serverThread : Server.serverThreadBus.getListServerThreads()){
             try {
@@ -39,7 +40,7 @@ public class ServerThreadBus {
             }
         }
     }
-    
+    //tương tự
     public void boardCast(int id, String message){
         for(ServerThread serverThread : Server.serverThreadBus.getListServerThreads()){
             if (serverThread.getClientNumber() == id) {
@@ -53,10 +54,12 @@ public class ServerThreadBus {
             }
         }
     }
+    
+    //lấy ra độ dài danh sách luồng
     public int getLength(){
         return listServerThreads.size();
     }
-    
+    //gửi thông điệp đến luồng có IDUser chỉ định
     public void sendMessageToUserID(int id, String message){
         for(ServerThread serverThread : Server.serverThreadBus.getListServerThreads()){
             if(serverThread.getUser().getID()==id){
@@ -69,7 +72,7 @@ public class ServerThreadBus {
             }
         }
     }
-    
+    //lấy ra luồng theo user ID
     public ServerThread getServerThreadByUserID(int ID){
         for(int i=0; i<Server.serverThreadBus.getLength(); i++){
             if(Server.serverThreadBus.getListServerThreads().get(i).getUser().getID()==ID){
@@ -78,7 +81,7 @@ public class ServerThreadBus {
         }
         return null;
     }
-    
+    //loại bỏ luồng
     public void remove(int id){
         for(int i=0; i<Server.serverThreadBus.getLength(); i++){
             if(Server.serverThreadBus.getListServerThreads().get(i).getClientNumber()==id){

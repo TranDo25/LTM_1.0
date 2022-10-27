@@ -219,10 +219,13 @@ public class Admin extends javax.swing.JFrame implements Runnable{
         String res = "";
         String room="";
         int i=1;
+        //duyệt từng luồng
         for(ServerThread serverThread : Server.serverThreadBus.getListServerThreads()){
             if(serverThread.getRoom()==null)
                 room = null;
+            //tạo room mới
             else room =""+ serverThread.getRoom().getID();
+            //thông báo luồng có user và client hay không
             if(serverThread.getUser()!=null){
                  res+=i+". Client-number: "+serverThread.getClientNumber()+", User-ID: "+serverThread.getUser().getID()+", Room: "+room+"\n";
             }
@@ -253,17 +256,17 @@ public class Admin extends javax.swing.JFrame implements Runnable{
         }
         jTextArea1.setText(res);
     }//GEN-LAST:event_jButton2ActionPerformed
-
+//gửi tin nhắn
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         sendMessage();
     }//GEN-LAST:event_jButton3ActionPerformed
-
+//gửi tin nhắn
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
         if(evt.getKeyCode()==10){
             sendMessage();
         }
     }//GEN-LAST:event_jTextField1KeyPressed
-
+//tiến hành ban hoặc cảnh cáo User
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         try {
             if(jTextField3.getText().length()==0){
