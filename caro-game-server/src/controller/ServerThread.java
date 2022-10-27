@@ -21,6 +21,8 @@ import model.User;
  *
  * @author Admin
  */
+//mỗi thread sẽ xử lí tác vụ của riêng nó
+//không thấy đọc thông điệp gì từ client
 public class ServerThread implements Runnable {
     
     private User user;
@@ -65,10 +67,11 @@ public class ServerThread implements Runnable {
     public void setUser(User user) {
         this.user = user;
     }
-    
+    //constructor
     public ServerThread(Socket socketOfServer, int clientNumber) {
         this.socketOfServer = socketOfServer;
         this.clientNumber = clientNumber;
+        //in ra số thứ tự của luồng
         System.out.println("Server thread number " + clientNumber + " Started");
         userDAO = new UserDAO();
         isClosed = false;
@@ -92,7 +95,7 @@ public class ServerThread implements Runnable {
                                 user1.getNumberOfwin()+","+user1.getNumberOfDraw()+","+user1.getRank();
     }
     //các hàm ghi ra luồng
-    
+    //các function này sẽ ghi ra luồng thông tin cần thiết cho client
     //luồng của phòng riêng
     public void goToOwnRoom() throws IOException{
         write("go-to-room," + room.getID()+","+room.getCompetitor(this.getClientNumber()).getClientIP()+",1,"+getStringFromUser(room.getCompetitor(this.getClientNumber()).getUser()));
@@ -169,6 +172,10 @@ public class ServerThread implements Runnable {
                     Server.serverThreadBus.boardCast(clientNumber, "chat-server,"+this.user.getNickname()+" đã offline");
                     this.user=null;
                 }
+//===========================================================================================================================               
+                
+                
+          
                 //Xử lý xem danh sách bạn bè
                 if(messageSplit[0].equals("view-friend-list")){
                     List<User> friends = userDAO.getListFriend(this.user.getID());
@@ -186,6 +193,9 @@ public class ServerThread implements Runnable {
                     Server.serverThreadBus.boardCast(clientNumber,messageSplit[0]+","+ user.getNickname()+" : "+ messageSplit[1]);
                     Server.admin.addMessage("["+user.getID()+"] "+user.getNickname()+" : "+ messageSplit[1]);
                 }
+                
+                
+//===========================================================================================================================  
                 //Xử lý vào phòng trong chức năng tìm kiếm phòng
                 if(messageSplit[0].equals("go-to-room")){
                     //tên phòng
@@ -216,11 +226,13 @@ public class ServerThread implements Runnable {
                             break;
                         }
                     }
-                    //nếu không tìm thấy thì ghi ra luồng thông điệp không tìm được phòng
+                    //nếu không tìm thấy phòng nào trong list luồng, trả về cho client thông điệp không tìm thấy phòng
                     if(!isFinded){
                         write("room-not-found,");
                     }
                 }
+                
+//===========================================================================================================================
                 //Xử lý lấy danh sách bảng xếp hạng
                 if(messageSplit[0].equals("get-rank-charts")){
                     List<User> ranks = userDAO.getUserStaticRank();
@@ -231,6 +243,7 @@ public class ServerThread implements Runnable {
                     System.out.println(res);
                     write(res);
                 }
+//===========================================================================================================================
                 //Xử lý tạo phòng
                 if (messageSplit[0].equals("create-room")) {
                     room = new Room(this);
@@ -244,6 +257,7 @@ public class ServerThread implements Runnable {
                     } 
                     userDAO.updateToPlaying(this.user.getID());
                 }
+//===========================================================================================================================
                 //Xử lý xem danh sách phòng trống
                 if (messageSplit[0].equals("view-room-list")) {
                     String res = "room-list,";
@@ -258,12 +272,19 @@ public class ServerThread implements Runnable {
                     write(res);
                     System.out.println(res);
                 }
+                
+                
                 //Xử lý lấy thông tin kết bạn và rank
                 if(messageSplit[0].equals("check-friend")){
                     String res = "check-friend-response,";
                     res += (userDAO.checkIsFriend(this.user.getID(), Integer.parseInt(messageSplit[1]))?1:0);
                     write(res);
                 }
+                
+//===========================================================================================================================
+//có lẽ nên giữ lại mỗi chức năng này
+
+
                 //Xử lý tìm phòng nhanh
                 if (messageSplit[0].equals("quick-room")) {
                     boolean isFinded = false;
@@ -280,19 +301,23 @@ public class ServerThread implements Runnable {
                             break;
                         }
                     }
-                    
                     if (!isFinded) {
                         this.room = new Room(this);
                         userDAO.updateToPlaying(this.user.getID());
                         System.out.println("Không tìm thấy phòng, tạo phòng mới");
                     }
                 }
+                
+                
                 //Xử lý không tìm được phòng
                 if (messageSplit[0].equals("cancel-room")) {
                     userDAO.updateToNotPlaying(this.user.getID());
                     System.out.println("Đã hủy phòng");
                     this.room = null;
                 }
+                
+                
+                
                 //Xử lý khi có người chơi thứ 2 vào phòng
                 if (messageSplit[0].equals("join-room")) {
                     int ID_room = Integer.parseInt(messageSplit[1]);
@@ -308,21 +333,34 @@ public class ServerThread implements Runnable {
                         }
                     }
                 }
+                
+                
+                
+                
                 //Xử lý yêu cầu kết bạn
                 if (messageSplit[0].equals("make-friend")){
                     Server.serverThreadBus.getServerThreadByUserID(Integer.parseInt(messageSplit[1]))
                             .write("make-friend-request,"+this.user.getID()+","+userDAO.getNickNameByID(this.user.getID()));
                 }
+                
+                
+                
                 //Xử lý xác nhận kết bạn
                 if(messageSplit[0].equals("make-friend-confirm")){
                     userDAO.makeFriend(this.user.getID(), Integer.parseInt(messageSplit[1]));
                     System.out.println("Kết bạn thành công");
                 }
+                
+                
+                
                 //Xử lý khi gửi yêu cầu thách đấu tới bạn bè
                 if(messageSplit[0].equals("duel-request")){
                     Server.serverThreadBus.sendMessageToUserID(Integer.parseInt(messageSplit[1]),
                             "duel-notice,"+this.user.getID()+","+this.user.getNickname());
                 }
+                
+                
+                
                 //Xử lý khi đối thủ đồng ý thách đấu
                 if(messageSplit[0].equals("agree-duel")){
                     this.room = new Room(this);
@@ -334,10 +372,16 @@ public class ServerThread implements Runnable {
                     goToOwnRoom();
                     userDAO.updateToPlaying(this.user.getID());
                 }
+                
+                
+                
                 //Xử lý khi không đồng ý thách đấu
                 if(messageSplit[0].equals("disagree-duel")){
+                    //gửi thông điệp đi ra socket
                     Server.serverThreadBus.sendMessageToUserID(Integer.parseInt(messageSplit[1]),message);
                 }
+                
+                
                 //Xử lý khi người chơi đánh 1 nước
                 //lần lượt trả vè các thông điệp tương tác từ 2 user
                 if(messageSplit[0].equals("caro")){
@@ -385,6 +429,8 @@ public class ServerThread implements Runnable {
         } catch (IOException e) {
             //Thay đổi giá trị cờ để thoát luồng
             isClosed = true;
+            
+            
             //Cập nhật trạng thái của user
             if(this.user!=null){
                 userDAO.updateToOffline(this.user.getID());
@@ -392,6 +438,8 @@ public class ServerThread implements Runnable {
                 Server.serverThreadBus.boardCast(clientNumber, "chat-server,"+this.user.getNickname()+" đã offline");
                 Server.admin.addMessage("["+user.getID()+"] "+user.getNickname()+" đã offline");
             }
+            
+            
             
             //remove thread khỏi bus
             Server.serverThreadBus.remove(clientNumber);

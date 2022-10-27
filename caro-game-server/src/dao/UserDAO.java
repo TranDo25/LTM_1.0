@@ -20,7 +20,7 @@ import model.User;
  * @author Admin
  */
 public class UserDAO extends DAO{
-
+//chờ đợi kết nối từ phía client
     public UserDAO() {
         super();
     }

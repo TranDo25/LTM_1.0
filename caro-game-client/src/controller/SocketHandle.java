@@ -75,6 +75,7 @@ public class SocketHandle implements Runnable {
             is = new BufferedReader(new InputStreamReader(socketOfClient.getInputStream()));
             String message;
             while (true) {
+                //đọc chuỗi thông điệp từ socket
                 message = is.readLine();
                 if (message == null) {
                     break;

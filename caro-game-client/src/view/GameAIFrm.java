@@ -862,7 +862,7 @@ public class GameAIFrm extends javax.swing.JFrame {
 
     }
 
-    // Đánh giá bàn cờ dựa trên tổng số điểm hàng ngan, hàng dọc, và 2 đường chéo
+    // Đánh giá bàn cờ dựa trên tổng số điểm hàng ngang, hàng dọc, và 2 đường chéo
     public int getScore(int[][] board, boolean forX, boolean blacksTurn) {
 
         return evaluateHorizontal(board, forX, blacksTurn)

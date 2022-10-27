@@ -768,7 +768,7 @@ public class GameClientFrm extends javax.swing.JFrame{
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
     }//GEN-LAST:event_jButton2ActionPerformed
-
+//luật chơi: hiển thị trong tab help khi chơi
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
         JOptionPane.showMessageDialog(rootPane, "Luật chơi: luật quốc tế 5 nước chặn 2 đầu\n"
@@ -786,7 +786,7 @@ public class GameClientFrm extends javax.swing.JFrame{
          Client.openView(Client.View.COMPETITORINFO, competitor);
             
     }//GEN-LAST:event_jButton3ActionPerformed
-
+//tắt mic
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         if(isSending){
             try {
@@ -800,6 +800,7 @@ public class GameClientFrm extends javax.swing.JFrame{
 
         }
         else{
+            //mở mic
             try {
                 Client.socketHandle.write("voice-message,open-mic");
             } catch (IOException ex) {
@@ -810,7 +811,7 @@ public class GameClientFrm extends javax.swing.JFrame{
             jButton5.setToolTipText("Mic đang bật");
         }
     }//GEN-LAST:event_jButton5ActionPerformed
-
+//tắt âm thanh trò chuyện
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         if (isListening) {
             try {
@@ -827,6 +828,7 @@ public class GameClientFrm extends javax.swing.JFrame{
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(rootPane, "Có lỗi xảy ra");
             }
+            //bật âm thanh trò chuyện
             voiceListening();
             jButton4.setIcon(new ImageIcon("assets/game/speaker.png"));
             jButton4.setToolTipText("Âm thanh trò chuyện đang bật");
@@ -854,6 +856,7 @@ public class GameClientFrm extends javax.swing.JFrame{
     public void showMessage(String message){
         JOptionPane.showMessageDialog(rootPane, message);
     }
+    //âm thanh sử dụng audiooutputstream
     public void playSound() {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("assets/sound/click.wav").getAbsoluteFile());
@@ -865,7 +868,7 @@ public class GameClientFrm extends javax.swing.JFrame{
             ex.printStackTrace();
         }
     }
-
+//tương tự nhưng bật bản 2
     public void playSound1() {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("assets/sound/1click.wav").getAbsoluteFile());
@@ -877,7 +880,7 @@ public class GameClientFrm extends javax.swing.JFrame{
             ex.printStackTrace();
         }
     }
-
+//tương tự nhưng bật bản 3
     public void playSound2() {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("assets/sound/win.wav").getAbsoluteFile());
@@ -889,9 +892,11 @@ public class GameClientFrm extends javax.swing.JFrame{
             ex.printStackTrace();
         }
     }
+    //dừng đếm thời gian
     public void stopTimer(){
         timer.stop();
     }
+    //
     int not(int i) {
         if (i == 1) {
             return 0;
@@ -901,7 +906,7 @@ public class GameClientFrm extends javax.swing.JFrame{
         }
         return 0;
     }
-
+//xử lí nút khi chơi
     void setupButton() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -959,13 +964,13 @@ public class GameClientFrm extends javax.swing.JFrame{
             }
         }
     }
-
+//từ chối hòa
     public void displayDrawRefuse(){
         JOptionPane.showMessageDialog(rootPane, "Đối thủ không chấp nhận hòa, mời bạn chơi tiếp");
         timer.start();
         setEnableButton(true);
     }
-    
+    //hiển thị đến lượt đối thủ
     public void displayCompetitorTurn() {
         timerjLabel19.setVisible(false);
         compretitorTurnJLabel.setVisible(true);
@@ -974,6 +979,7 @@ public class GameClientFrm extends javax.swing.JFrame{
         jButton2.setVisible(false);
         jLabel3.setVisible(false);
     }
+    //hiển thị đến lượt user
     public void displayUserTurn(){
         timerjLabel19.setVisible(false);
         compretitorTurnJLabel.setVisible(false);
@@ -982,31 +988,32 @@ public class GameClientFrm extends javax.swing.JFrame{
         jButton2.setVisible(true);
         jLabel3.setVisible(true);
     }
-    
+    //bắt đầu đếm giờ
     public void startTimer(){
         timerjLabel19.setVisible(true);
         second = 60;
         minute = 0;
         timer.start();
     }
+    //set thông báo
     public void addMessage(String message){
         String temp = jTextArea1.getText();
         temp += competitor.getNickname() + ": " + message+"\n";
         jTextArea1.setText(temp);
         jTextArea1.setCaretPosition(jTextArea1.getDocument().getLength());
     }
-    
+    //thêm bước di chuyển của đối thủ
     public void addCompetitorMove(String x, String y){
         displayUserTurn();
         startTimer();
         setEnableButton(true);
         caro(x, y);
     }
-    
+    //set thua cuộc
     public void setLose(String xx, String yy){
         caro(xx, yy);
     }
-    
+    //tăng lượt thắng cho user
     public void increaseWinMatchToUser(){
         Client.user.setNumberOfwin(Client.user.getNumberOfwin()+1);
         jLabel14.setText(""+Client.user.getNumberOfwin());
@@ -1017,6 +1024,7 @@ public class GameClientFrm extends javax.swing.JFrame{
         jTextArea1.setText(tmp);
         jTextArea1.setCaretPosition(jTextArea1.getDocument().getLength());
     }
+    //tăng lượt thắng cho đối thủ
     public void increaseWinMatchToCompetitor(){
         competitor.setNumberOfwin(competitor.getNumberOfwin()+1);
         jLabel17.setText(""+competitor.getNumberOfwin());
@@ -1027,12 +1035,14 @@ public class GameClientFrm extends javax.swing.JFrame{
         jTextArea1.setText(tmp);
         jTextArea1.setCaretPosition(jTextArea1.getDocument().getLength());
     }
+    //hiển thị ván chơi hòa
     public void displayDrawGame(){
         String tmp = jTextArea1.getText();
         tmp += "--Ván chơi hòa--\n";
         jTextArea1.setText(tmp);
         jTextArea1.setCaretPosition(jTextArea1.getDocument().getLength());
     }
+    //yêu cầu được hòa
     public void showDrawRequest() {
         int res = JOptionPane.showConfirmDialog(rootPane, "Đối thử muốn cầu hóa ván này, bạn đồng ý chứ", "Yêu cầu cầu hòa", JOptionPane.YES_NO_OPTION);
         if (res == JOptionPane.YES_OPTION) {
@@ -1052,6 +1062,8 @@ public class GameClientFrm extends javax.swing.JFrame{
             }
         }
     }
+    
+    //liên lạc bằng mic
     public void voiceOpenMic() {
 
         sendThread = new Thread() {
@@ -1106,12 +1118,12 @@ public class GameClientFrm extends javax.swing.JFrame{
         sendThread.start();
 
     }
-
+//đóng  mic
     public void voiceCloseMic() {
         isSending = false;
     }
 
-    
+    //bắt đầu nghe
     public void voiceListening() {
         listenThread = new Thread() {
             @Override
@@ -1163,6 +1175,7 @@ public class GameClientFrm extends javax.swing.JFrame{
         }
         return max;
     }
+    //xử lí âm thanh
     public double volumeRMS(byte[] raw) {
         double sum = 0d;
         if (raw.length == 0) {
@@ -1183,16 +1196,18 @@ public class GameClientFrm extends javax.swing.JFrame{
 
         return rootMeanSquare;
     }
+    //dừng nghe
     public void voiceStopListening(){
         isListening = false;
     }
-    
+    // gửi đi thông điệp nghe
     public void addVoiceMessage(String message){
         String temp = jTextArea1.getText();
         temp += competitor.getNickname() + " " + message+"\n";
         jTextArea1.setText(temp);
         jTextArea1.setCaretPosition(jTextArea1.getDocument().getLength());
     }
+    //tạo lượt chơi mới
     public void newgame() {
         
         if (numberOfMatch % 2 == 0) {
@@ -1224,13 +1239,14 @@ public class GameClientFrm extends javax.swing.JFrame{
         preButton = null;
         numberOfMatch++;
     }
+    //update số lượt chơi
     public void updateNumberOfGame(){
         competitor.setNumberOfGame(competitor.getNumberOfGame() + 1);
         jLabel16.setText(Integer.toString(competitor.getNumberOfGame()));
         Client.user.setNumberOfGame(Client.user.getNumberOfGame() + 1);
         jLabel13.setText(Integer.toString(Client.user.getNumberOfGame()));
     }
-    
+    //
     public void blockgame() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {

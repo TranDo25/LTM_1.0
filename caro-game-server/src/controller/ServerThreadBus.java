@@ -26,10 +26,11 @@ public class ServerThreadBus {
     public ServerThreadBus() {
         listServerThreads = new ArrayList<>();
     }
-//hàm add luồng
+//hàm add luồng vào list
     public void add(ServerThread serverThread){
         listServerThreads.add(serverThread);
     }
+    // các thao tác liên quan đến bus
     //duyệt từng luồng, lần lượt gửi thông điệp đến tất cả các luồng
     public void mutilCastSend(String message){ //like sockets.emit in socket.io
         for(ServerThread serverThread : Server.serverThreadBus.getListServerThreads()){

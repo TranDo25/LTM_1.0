@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Admin
  */
+//đây là core của server
 public class Server {
 
     public static volatile ServerThreadBus serverThreadBus;
@@ -35,6 +36,7 @@ public class Server {
         ID_room = 100;  
         
         try {
+            //tạo server socket tại cổng 7777
             listener = new ServerSocket(7777);
         } catch (IOException e) {
             System.out.println(e);
@@ -46,21 +48,25 @@ public class Server {
                 100, // maximumPoolSize
                 10, // thread timeout
                 TimeUnit.SECONDS,
+                //nghiên cứu thêm về ArrayBlockingQueue
                 new ArrayBlockingQueue<>(8) // queueCapacity
         );
+        //khởi tạo view Admin
         admin = new Admin();
+        //chạy view Admin
         admin.run();
         try {
+            //mỗi lần có một người đăng nhập, sẽ tạo ra một luồng mới và add vào bus
             while (true) {
                 // Chấp nhận một yêu cầu kết nối từ phía Client.
                 // Đồng thời nhận được một đối tượng Socket tại server.
                 // lắng nghe  tín hiệu kết nối
                 socketOfServer = listener.accept();
-                //lấy địa chỉ IP và địa chi host
+                //lấy địa chỉ IP và địa chi host, in ra console
                 System.out.println(socketOfServer.getInetAddress().getHostAddress());
                 //nạp thêm  luồng vào máy, sau đó tăng số client lên
                 ServerThread serverThread = new ServerThread(socketOfServer, clientNumber++);
-                //bus sẽ add thêm luồng nữa
+                //bus sẽ add thêm luồng nữa vào list
                 serverThreadBus.add(serverThread);
                 //in ra số luồng đang chạy
                 System.out.println("Số thread đang chạy là: "+serverThreadBus.getLength());

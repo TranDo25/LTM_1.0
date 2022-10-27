@@ -28,6 +28,7 @@ public class Admin extends javax.swing.JFrame implements Runnable{
         this.setLocationRelativeTo(null);
         jTextArea1.setEditable(false);
         jTextArea2.setEditable(false);
+        //khởi tạo đối tượng UserDAO
         userDAO = new UserDAO();
     }
 
