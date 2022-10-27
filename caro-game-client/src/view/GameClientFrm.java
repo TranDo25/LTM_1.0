@@ -139,6 +139,7 @@ public class GameClientFrm extends javax.swing.JFrame{
         //Setup timer
         second = 60;
         minute = 0;
+        //thiết lập bộ đếm thời gian
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -195,7 +196,7 @@ public class GameClientFrm extends javax.swing.JFrame{
         });
         
     }
-
+//thoát game
     public void exitGame() {
         try {
             timer.stop();
@@ -210,7 +211,7 @@ public class GameClientFrm extends javax.swing.JFrame{
         Client.closeAllViews();
         Client.openView(Client.View.HOMEPAGE);
     }
-    
+    //stop tất cả các luồng, đóng loa, đóng mic
     public void stopAllThread(){
         timer.stop();
         voiceCloseMic();

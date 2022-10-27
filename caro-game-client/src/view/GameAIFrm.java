@@ -54,10 +54,14 @@ public class GameAIFrm extends javax.swing.JFrame {
         //Setup play button
         for (int i = 0; i < Buttons.length; i++) {
             for (int j = 0; j < Buttons.length; j++) {
+                //khởi tạo tọa độ
                 Point point = new Point(i, j);
+                //khởi tạo đối tượng XO
                 Buttons[i][j] = new XOButton(i, j);
+                //lắng nghe sự kiện từ chuột
+               
                 Buttons[i][j].addMouseListener( new MouseListener() {
-
+                    //xử lí mỗi sự kiện mouse release
                     @Override
                     public void mouseReleased(MouseEvent e) {
                         // TODO Auto-generated method stub
@@ -537,7 +541,7 @@ public class GameAIFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
+        
         JOptionPane.showMessageDialog(rootPane, "Luật chơi: luật quốc tế 5 nước chặn 2 đầu\n"
                 + "Hai người chơi luân phiên nhau chơi trước\n"
                 + "Người chơi trước đánh X, người chơi sau đánh O\n"
@@ -551,10 +555,11 @@ public class GameAIFrm extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
     }//GEN-LAST:event_jButton3ActionPerformed
-
+//hiển thị tỷ số
     private void updateScore(){
         jLabel20.setText("Tỉ số: "+userWin+"-"+aIWin);
     }
+    //xử lí logic
     private void handleClickButton(Point point) {
 
         // TODO: CALC LOGIC HERE
@@ -610,13 +615,14 @@ public class GameAIFrm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Bạn đi trước", "Ván mới",JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
+    //hiển thị nếu client thắng
     private void displayUserWin(){
         String tmp = jTextArea1.getText();
         tmp+="--Bạn đã thắng, tỉ số hiện tại là "+userWin+"-"+aIWin+"--\n";
         jTextArea1.setText(tmp);
         jTextArea1.setCaretPosition(jTextArea1.getDocument().getLength());
     }
+    //hiển thị nếu AI thắng
     private void displayAIWin(){
         String tmp = jTextArea1.getText();
         tmp+="--Máy thắng, tỉ số hiện tại là "+userWin+"-"+aIWin+"--\n";
@@ -624,7 +630,7 @@ public class GameAIFrm extends javax.swing.JFrame {
         jTextArea1.setCaretPosition(jTextArea1.getDocument().getLength());
     }
     
-
+//tính toán nước đi tiếp theo
     public int[] calcNextMove(int depth) {
         int[][] board = getMatrixBoard();
         Object[] bestMove = searchWinningMove(board);
@@ -656,7 +662,7 @@ public class GameAIFrm extends javax.swing.JFrame {
         }
         return move;
     }
-
+//thực hiện nước đi
     public int[][] playNextMove(int[][] board, int[] move, boolean isUserTurn) {
         int i = move[0], j = move[1];
         int[][] newBoard = new int[row][col];
@@ -668,7 +674,7 @@ public class GameAIFrm extends javax.swing.JFrame {
         newBoard[i][j] = isUserTurn ? 2 : 1;
         return newBoard;
     }
-
+//tìm kiếm nước đi chiến thắng
     private Object[] searchWinningMove(int[][] matrix) {
         ArrayList<int[]> allPossibleMoves = generateMoves(matrix);
         System.out.println(allPossibleMoves.size());
@@ -688,7 +694,7 @@ public class GameAIFrm extends javax.swing.JFrame {
 
         return winningMove;
     }
-
+//tìm kiếm nước đi thua
     private Object[] searchLoseMove(int[][] matrix) {
         ArrayList<int[]> allPossibleMoves = generateMoves(matrix);
         System.out.println(allPossibleMoves.size());
@@ -708,7 +714,7 @@ public class GameAIFrm extends javax.swing.JFrame {
 
         return losingMove;
     }
-
+//thuật toán search AB gì đó
     public Object[] minimaxSearchAB(int depth, int[][] board, boolean max, double alpha, double beta) {
         if (depth == 0) {
             Object[] x = {evaluateBoardForWhite(board, !max), null, null};
@@ -776,7 +782,7 @@ public class GameAIFrm extends javax.swing.JFrame {
         }
         return bestMove;
     }
-
+//đánh giá 
     public double evaluateBoardForWhite(int[][] board, boolean userTurn) {
 
         double blackScore = getScore(board, true, userTurn);
@@ -789,7 +795,7 @@ public class GameAIFrm extends javax.swing.JFrame {
         return whiteScore / blackScore;
 
     }
-
+//tạo các nước đi
     public ArrayList<int[]> generateMoves(int[][] boardMatrix) {
         ArrayList<int[]> moveList = new ArrayList<int[]>();
 
@@ -863,7 +869,7 @@ public class GameAIFrm extends javax.swing.JFrame {
                 + evaluateVertical(board, forX, blacksTurn)
                 + evaluateDiagonal(board, forX, blacksTurn);
     }
-
+//đánh giá đường ngang
     public static int evaluateHorizontal(int[][] boardMatrix, boolean forX, boolean playersTurn) {
 
         int consecutive = 0;
@@ -913,7 +919,7 @@ public class GameAIFrm extends javax.swing.JFrame {
         return score;
     }
     // hàm tính toán đường dọc tương tự như đường ngan
-
+//đánh giá đường dọc
     public static int evaluateVertical(int[][] boardMatrix, boolean forX, boolean playersTurn) {
 
         int consecutive = 0;
@@ -952,7 +958,7 @@ public class GameAIFrm extends javax.swing.JFrame {
         return score;
     }
     // Hàm tính toán 2 đường chéo tương tự như hàng ngan
-
+//đánh giá đường chéo
     public static int evaluateDiagonal(int[][] boardMatrix, boolean forX, boolean playersTurn) {
 
         int consecutive = 0;
@@ -1028,7 +1034,7 @@ public class GameAIFrm extends javax.swing.JFrame {
         }
         return score;
     }
-
+//tính điểm theo công thức
     public static int getConsecutiveSetScore(int count, int blocks, boolean currentTurn) {
         final int winGuarantee = 1000000;
         if (blocks == 2 && count <= 5) {
@@ -1088,7 +1094,7 @@ public class GameAIFrm extends javax.swing.JFrame {
         }
         return winScore * 2;
     }
-
+//sinh ma trận
     public int[][] getMatrixBoard() {
         int matrix[][] = new int[row][col];
         for (int i = 0; i < Buttons.length; i++) {

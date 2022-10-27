@@ -51,6 +51,7 @@ public class CompetitorInfoFrm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
     }
+    
     public void checkFriend(boolean isFriend){
         this.isFriend = isFriend;
         if(isFriend){

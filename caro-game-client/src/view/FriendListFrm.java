@@ -214,8 +214,11 @@ public class FriendListFrm extends javax.swing.JFrame {
             isClicked = true;
             int res = JOptionPane.showConfirmDialog(rootPane, "Bạn có muốn thách đấu người bạn này không", "Xác nhận thách đầu", JOptionPane.YES_NO_OPTION);
             if(res == JOptionPane.YES_OPTION){
+                //đóng các view khác
                 Client.closeAllViews();
+                //mở view mới
                 Client.openView(Client.View.GAMENOTICE, "Thách đấu", "Đang chờ phản hồi từ đối thủ");
+                //ghi ra socket thông điệp để xử lý
                 Client.socketHandle.write("duel-request,"+friend.getID());
             }
             else{
