@@ -16,6 +16,8 @@
 * xem thông  tin của người chơi
 * chat tổng
 * chat cá nhân và call với đối thủ
+* chơi 2 người
+* chơi với máy
 * tạo phòng chơi 
 * tìm phòng
 * kết bạn
