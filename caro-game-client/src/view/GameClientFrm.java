@@ -735,7 +735,7 @@ public class GameClientFrm extends javax.swing.JFrame{
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         exitGame();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-
+//thực hiện chat
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             if (jTextField1.getText().isEmpty()) {
@@ -753,7 +753,7 @@ public class GameClientFrm extends javax.swing.JFrame{
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-
+//yêu cầu hòa
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         
         try {

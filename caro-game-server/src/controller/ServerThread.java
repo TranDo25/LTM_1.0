@@ -73,14 +73,14 @@ public class ServerThread implements Runnable {
         userDAO = new UserDAO();
         isClosed = false;
         room = null;
-        //kiểm tra nếu client đang là locel host thì cập nhật IP local, nếu không phải thì lấy IP hiện thời
+        //kiểm tra nếu client đang là local host thì cập nhật IP local, nếu không phải thì lấy IP hiện thời
         //Trường hợp test máy ở server sẽ lỗi do hostaddress là localhost
         if(this.socketOfServer.getInetAddress().getHostAddress().equals("127.0.0.1")){
             clientIP = "127.0.0.1";
         }
         else{
             clientIP = this.socketOfServer.getInetAddress().getHostAddress();
-            System.out.println(this.socketOfServer.getInetAddress().getHostAddress());
+//            System.out.println(this.socketOfServer.getInetAddress().getHostAddress());
         }
         
     }
