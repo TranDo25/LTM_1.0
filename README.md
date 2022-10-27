@@ -29,3 +29,6 @@
 * chat tổng
 * phát thông báo
 * cảnh cáo và ban
+### note:
+* chức năng tìm phòng nhanh giúp máy tự tạo phòng sẵn và chỉ chờ đối thủ click vào chơi
+* trong khi chơi 2 người, có chức năng cầu hòa để tính điểm hòa trận đấu, có chức năng chat, voice, mic để tương tác. Có timer 60s khi đến lượt mỗi người. Hết timer thì sẽ bị xử thua. Có thanh progress bar để biểu thị mic có thể nói được. 
