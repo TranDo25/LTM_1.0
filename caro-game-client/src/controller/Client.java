@@ -30,6 +30,7 @@ import view.WaitingRoomFrm;
  * @author Admin
  */
 public class Client {
+    //liệt kê các view
     public enum View{
         LOGIN,
         REGISTER,
@@ -66,7 +67,7 @@ public class Client {
     public static FriendRequestFrm friendRequestFrm;
     public static GameAIFrm gameAIFrm;
     public static RoomNameFrm roomNameFrm;
-    //Thiết lập socket
+    //Thiết lập socket để gửi dữ liệu qua cho server
     public static SocketHandle socketHandle;
     
     public Client() {
@@ -89,6 +90,7 @@ public class Client {
         }
         return homePageFrm;
     }
+    //khởi tạo view
     public void initView(){
         
         loginFrm = new LoginFrm();
@@ -96,7 +98,7 @@ public class Client {
         socketHandle = new SocketHandle();
         socketHandle.run();
     }
-    
+    //mở view
     public static void openView(View viewName){
         if(viewName != null){
             switch(viewName){

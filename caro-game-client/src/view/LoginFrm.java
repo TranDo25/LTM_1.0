@@ -20,25 +20,37 @@ public class LoginFrm extends javax.swing.JFrame {
      * Creates new form DemoFrm
      */
     public LoginFrm() {
+        //khởi tạo các thành phần của loginFrm
         initComponents();
+        //tên Frm
         this.setTitle("Caro Game Nhóm 5");
+        //set ảnh Frm
         this.setIconImage(new ImageIcon("assets/image/caroicon.png").getImage());
+        //set tự động dóng chương trình bằng cách bấm X
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //set có thể thay đổi kích thước
         this.setResizable(false);
+        //set vị trí hiển thị
         this.setLocationRelativeTo(null);
     }
-
+//constructor nạp password vs mat khau
     public LoginFrm(String taiKhoan, String matKhau) {
         initComponents();
+        //thiết lập biến nhận matKhau
         jPasswordField1.setText(matKhau);
+        //thiết lập biến nhận tài khoản
         jTextField1.setText(taiKhoan);
+        //thiết lập close bằng cách bấm X
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //xem comment tương tự
         this.setResizable(false);
         this.setLocationRelativeTo(null);
     }
+    //hàm hiển thị lỗi
     public void showError(String message){
         JOptionPane.showMessageDialog(rootPane, message);
     }
+    //hàm ghi log
     public void log(String message){
         JOptionPane.showMessageDialog(rootPane,"ID của server thread là:"+ message);
     }
@@ -150,14 +162,19 @@ public class LoginFrm extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
+            //lấy ra chuỗi tài khoản
             String taiKhoan = jTextField1.getText();
             if(taiKhoan.isEmpty())
                 throw new Exception("Vui lòng nhập tên tài khoản");
+            //lấy ra password
             String matKhau = String.copyValueOf(jPasswordField1.getPassword());
             if(matKhau.isEmpty())
                 throw new Exception("Vui lòng nhập mật khẩu");
+            //đóng tất cả các view khác
             Client.closeAllViews();
+            //mở view đang xác thực tài khoản
             Client.openView(Client.View.GAMENOTICE, "Đăng nhập", "Đang xác thực thông tin đăng nhập");
+            //socket gửi mã lên cho server kèm tài khoản và mật khẩu để verify
             Client.socketHandle.write("client-verify,"+taiKhoan+","+matKhau);            
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());

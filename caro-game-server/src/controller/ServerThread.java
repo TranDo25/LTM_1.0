@@ -114,15 +114,21 @@ public class ServerThread implements Runnable {
                     break;
                 }
                 String[] messageSplit = message.split(",");
-                //Xác minh
+                //Xác minh đăng nhập
                 if(messageSplit[0].equals("client-verify")){
                     System.out.println(message);
+                    //gọi đến lớp DAO để xác mình với database xem đăng nhập dúng không
                     User user1 = userDAO.verifyUser(new User(messageSplit[1], messageSplit[2]));
                     if(user1==null)
+                        //nếu không hợp lệ gửi thông báo không hợp lệ tới client
                         write("wrong-user,"+messageSplit[1]+","+messageSplit[2]);
+                    
+                    //nếu kiểm tra tài khoản đang online mà không bị ban
                     else if(!user1.getIsOnline()&&!userDAO.checkIsBanned(user1)){
+                        //gửi thông báo đăng nhập thành công tới client
                         write("login-success,"+getStringFromUser(user1));
                         this.user = user1;
+                        //thiết lập trạng thái trong database rằng user này đang online
                         userDAO.updateToOnline(this.user.getID());
                         Server.serverThreadBus.boardCast(clientNumber, "chat-server,"+user1.getNickname()+" đang online");
                         Server.admin.addMessage("["+user1.getID()+"] "+user1.getNickname()+ " đang online");

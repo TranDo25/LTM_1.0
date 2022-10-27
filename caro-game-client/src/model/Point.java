@@ -4,7 +4,7 @@
  */
 package model;
 
-
+//tọa độ điểm (x, y)
 public class Point {
 	public int x, y;
 	

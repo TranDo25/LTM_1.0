@@ -13,13 +13,17 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 public class XOButton extends JButton {
+    //icon X
 	private ImageIcon X;
-	private ImageIcon O;
+//icon O
+        private ImageIcon O;
+//tọa độ
 	public Point point;
 	public static boolean isXMove = true;
 	public int value = 0;
 	
 	public XOButton(int x, int y) {
+            //sử dụng ảnh để đánh dấu X O
 		X = new ImageIcon("assets/image/x3.jpg");
 		O = new ImageIcon("assets/image/o3.jpg");
 		setHorizontalAlignment(SwingConstants.CENTER);
