@@ -31,6 +31,7 @@ import view.WaitingRoomFrm;
  */
 public class Client {
     //liệt kê các view
+    //có một danh sách các view
     public enum View{
         LOGIN,
         REGISTER,
@@ -49,8 +50,9 @@ public class Client {
         GAMEAI,
         ROOMNAMEFRM
     }
+    //có một ông user
     public static User user;
-    //Danh sách giao diện
+
     public static LoginFrm loginFrm;
     public static RegisterFrm registerFrm;
     public static HomePageFrm homePageFrm;
@@ -69,11 +71,12 @@ public class Client {
     public static RoomNameFrm roomNameFrm;
     //Thiết lập socket để gửi dữ liệu qua cho server
     public static SocketHandle socketHandle;
-    
+    //constructor
     public Client() {
     }
 
     public static JFrame getVisibleJFrame(){
+        //isVisible: hiển thị view đến người dùng
         if(roomListFrm!=null&&roomListFrm.isVisible())
             return roomListFrm;
         if(friendListFrm!=null&&friendListFrm.isVisible()){
@@ -90,7 +93,7 @@ public class Client {
         }
         return homePageFrm;
     }
-    //khởi tạo view
+    //khởi tạo view login, mở socket xử lí, chạy socket
     public void initView(){
         
         loginFrm = new LoginFrm();

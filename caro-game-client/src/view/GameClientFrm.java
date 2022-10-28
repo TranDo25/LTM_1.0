@@ -69,8 +69,10 @@ public class GameClientFrm extends javax.swing.JFrame{
     private JButton preButton;
     private int userWin;
     private int competitorWin;
+    //luồng liên quan đến voice
     private Thread sendThread;
     private boolean isSending;
+    //luồng liên quan đến voice
     private Thread listenThread;
     private boolean isListening;
     private String competitorIP;
@@ -136,11 +138,14 @@ public class GameClientFrm extends javax.swing.JFrame{
         yourTurnJLabel3.setVisible(false);
         compretitorTurnJLabel.setVisible(false);
         timerjLabel19.setVisible(false);
+        
         jTextArea1.setEditable(false);
+        
         jLabel20.setText("Tỉ số: 0-0");
         //Setup timer
         second = 60;
         minute = 0;
+        
         //thiết lập bộ đếm thời gian
         timer = new Timer(1000, new ActionListener() {
             @Override
@@ -178,12 +183,16 @@ public class GameClientFrm extends javax.swing.JFrame{
         normalItem = new String[2];
         normalItem[1] = "assets/image/o2.jpg";
         normalItem[0] = "assets/image/x2.jpg";
+        
+        //hình ảnh item win sẽ có màu xanh bao quanh
         winItem = new String[2];
         winItem[1] = "assets/image/owin.jpg";
         winItem[0] = "assets/image/xwin.jpg";
+        //hình ảnh này có kích cỡ nhỏ
         iconItem = new String[2];
         iconItem[1] = "assets/image/o3.jpg";
         iconItem[0] = "assets/image/x3.jpg";
+        //hình ảnh này có màu xanh lam
         preItem = new String[2];
         preItem[1] = "assets/image/o2_pre.jpg";
         preItem[0] = "assets/image/x2_pre.jpg";
@@ -910,6 +919,8 @@ public class GameClientFrm extends javax.swing.JFrame{
     }
 //xử lí nút khi chơi
     void setupButton() {
+        //mặc định size là 15
+        
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 final int a = i, b = j;
@@ -918,20 +929,26 @@ public class GameClientFrm extends javax.swing.JFrame{
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         try {
+                            //xử lí sự kiện click từng ô
                             button[a][b].setDisabledIcon(new ImageIcon(normalItem[not(numberOfMatch % 2)]));
                             button[a][b].setEnabled(false);
+//                            bật nhạt
                             playSound();
                             second = 60;
                             minute = 0;
+                            //ma trận của client, tại ô đó set = 1
                             matrix[a][b] = 1;
+                            //
                             userMatrix[a][b] = 1;
                             button[a][b].setEnabled(false);
                             try {
+                                //kiểm tra nếu có hàng ngang, hàng dọc, 2 đường chéo thỏa mãn win
                                 if (checkRowWin() == 1 || checkColumnWin() == 1 || checkRightCrossWin() == 1 || checkLeftCrossWin() == 1) {
                                     //Xử lý khi người chơi này thắng
                                     setEnableButton(false);
                                     increaseWinMatchToUser();
                                     Client.openView(Client.View.GAMENOTICE,"Bạn đã thắng","Đang thiết lập ván chơi mới");
+                                    
                                     Client.socketHandle.write("win,"+a+","+b);
                                 }
                                 else{
@@ -1070,7 +1087,7 @@ public class GameClientFrm extends javax.swing.JFrame{
     
     //liên lạc bằng mic
     public void voiceOpenMic() {
-
+//mở luồng để nhận voice
         sendThread = new Thread() {
 
             @Override
@@ -1130,6 +1147,7 @@ public class GameClientFrm extends javax.swing.JFrame{
 
     //bắt đầu nghe
     public void voiceListening() {
+        //mở luồng nghe
         listenThread = new Thread() {
             @Override
             public void run() {
@@ -1223,7 +1241,9 @@ public class GameClientFrm extends javax.swing.JFrame{
             JOptionPane.showMessageDialog(rootPane, "Đến lượt bạn đi trước");
             //bắt đầu đếm ngược trong thời gian đối thủ đi
             startTimer();
+            //hiển thị thông báo đến lượt của client
             displayUserTurn();
+            //hiển thị timer lên
             timerjLabel19.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(rootPane, "Đối thủ đi trước");
@@ -1231,6 +1251,7 @@ public class GameClientFrm extends javax.swing.JFrame{
         }
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
+                //thiết lập lại tất cả các nút, set blank và border cho chúng
                 button[i][j].setIcon(new ImageIcon("assets/image/blank.jpg"));
                 button[i][j].setDisabledIcon(new ImageIcon("assets/image/border.jpg"));
                 button[i][j].setText("");
@@ -1241,9 +1262,10 @@ public class GameClientFrm extends javax.swing.JFrame{
         }
         setEnableButton(true);
         if(numberOfMatch % 2 != 0){
+            //nếu số trận đấu là lẻ, block game?
             blockgame();
         }
-        
+        //set icon cho những trận chẵn hoặc trận lẻ
         jLabel3.setIcon(new ImageIcon(iconItem[numberOfMatch % 2]));
         jLabel5.setIcon(new ImageIcon(iconItem[not(numberOfMatch % 2)]));
         preButton = null;
@@ -1260,7 +1282,7 @@ public class GameClientFrm extends javax.swing.JFrame{
         //hiển thị ra view
         jLabel13.setText(Integer.toString(Client.user.getNumberOfGame()));
     }
-    //
+    //block game
     public void blockgame() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -1280,27 +1302,35 @@ public class GameClientFrm extends javax.swing.JFrame{
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (matrix[i][j] == 0) {
+                    //kích hoạt ô tại vị trí này
                     button[i][j].setEnabled(b);
                 }
             }
         }
     }
     //thuat toan tinh thang thua
-
+//khá là lằng nhằng với đồng thuật toán này
     public int checkRow() {
         int win = 0, hang = 0, n = 0, k = 0;
         boolean check = false;
+        //khởi tạo một list JButton
         List<JButton> list = new ArrayList<>();
+        //size = 15
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (check) {
+                    //nếu có 1 phần tử trong ma trận của đối thủ  = 1
                     if (competitorMatrix[i][j] == 1) {
+                        //tăng hàng lên
                         hang++;
+                        //lưu lại button tại vị trí đó
                         list.add(button[i][j]);
                         if (hang > 4) {
+                            //nếu có 5 hàng trở lên, thiết lập ImageIcon chiến thắng cho 5 hàng này
                             for (JButton jButton : list) {
                                 button[i][j].setDisabledIcon(new ImageIcon(winItem[numberOfMatch % 2]));
                             }
+                            //lượt thắng là 1
                             win = 1;
                             break;
                         }
@@ -1614,8 +1644,11 @@ public class GameClientFrm extends javax.swing.JFrame{
         yy = Integer.parseInt(y);
         // danh dau vi tri danh
         competitorMatrix[xx][yy] = 1;
+        //chỉnh sửa trạng thái của ma trận
         matrix[xx][yy] = 1;
+        //nút ma trận được kích hoạt
         button[xx][yy].setEnabled(false);
+        //bật âm thanh
         playSound1();
         if(preButton!=null){
             preButton.setDisabledIcon(new ImageIcon(normalItem[numberOfMatch % 2]));

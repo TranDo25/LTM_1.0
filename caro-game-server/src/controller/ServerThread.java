@@ -390,9 +390,11 @@ public class ServerThread implements Runnable {
                 if(messageSplit[0].equals("chat")){
                     room.getCompetitor(clientNumber).write(message);
                 }
+                //nếu có thông điệp win từ client
                 if(messageSplit[0].equals("win")){
                     userDAO.addWinGame(this.user.getID());
                     room.increaseNumberOfGame();
+                    //lấy ra thông tin đối thủ, trả về chuỗi caro
                     room.getCompetitor(clientNumber).write("caro,"+messageSplit[1]+","+messageSplit[2]);
                     room.boardCast("new-game,");
                 }

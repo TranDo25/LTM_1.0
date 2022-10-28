@@ -66,6 +66,7 @@ public class SocketHandle implements Runnable {
                 Integer.parseInt(message[start+8]));
     }
     @Override
+    //toàn bộ việc lắng nghe thông điệp từ phía server sẽ được xử lí tại đây
     public void run() {
  
         try {
@@ -79,6 +80,8 @@ public class SocketHandle implements Runnable {
             //từ socket sẽ lấy ra message để xử lý
             String message;
             while (true) {
+                //lấy ra được thông điệp, đọc từng if-else, xử lí xong thì lại 
+                //đọc tiếp message khác
                 //đọc chuỗi thông điệp từ socket
                 message = is.readLine();
                 //nếu chuỗi null, dừng vòng lặp while
@@ -88,6 +91,8 @@ public class SocketHandle implements Runnable {
                 //chia tách chuỗi bằng dấu phẩy
                 String[] messageSplit = message.split(",");
                 //nếu message = server-send-id, nhận ID_Server từ phần tử cắt chuỗi thứ 2
+                //===================================================================================
+                //sau khi cắt chuỗi, xử lí thông điệp từ dưới này
                 if(messageSplit[0].equals("server-send-id")){
                     ID_Server = Integer.parseInt(messageSplit[1]);
                 }
@@ -273,7 +278,7 @@ public class SocketHandle implements Runnable {
                     Client.openView(Client.View.HOMEPAGE);
                     JOptionPane.showMessageDialog(Client.homePageFrm, "Đối thủ không đồng ý thách đấu");
                 }
-                //Xử lý đánh một nước trong ván chơi
+                //
                 if(messageSplit[0].equals("caro")){
                     Client.gameClientFrm.addCompetitorMove(messageSplit[1], messageSplit[2]);
                 }
