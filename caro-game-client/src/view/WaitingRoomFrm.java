@@ -35,6 +35,7 @@ public class WaitingRoomFrm extends javax.swing.JFrame {
         jButton2.setIcon(new ImageIcon("assets/icon/door_exit.png"));
         jLabel4.setVisible(false);
     }
+    //set text cho label là tên phòng
     public void setRoomName(String roomName){
         jLabel1.setText("Phòng "+roomName);
     }

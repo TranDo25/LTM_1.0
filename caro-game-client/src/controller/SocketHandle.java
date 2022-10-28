@@ -231,6 +231,7 @@ public class SocketHandle implements Runnable {
                             , roomID
                             ,isStart
                             ,competitorIP);
+                    //tạo mới phòng
                     Client.gameClientFrm.newgame();
                 }
                 //Tạo phòng và server trả về tên phòng
@@ -238,22 +239,31 @@ public class SocketHandle implements Runnable {
                     Client.closeAllViews();
                     Client.openView(Client.View.WAITINGROOM);
                     Client.waitingRoomFrm.setRoomName(messageSplit[1]);
+                    //nếu chuỗi gửi về kèm cả mật khẩu, set thêm cả mật khẩu phòng
                     if(messageSplit.length==3)
                         Client.waitingRoomFrm.setRoomPassword("Mật khẩu phòng: "+messageSplit[2]);
                 }
                 //Xử lý yêu cầu kết bạn tới
                 if(messageSplit[0].equals("make-friend-request")){
+                    //lấy ra ID
                     int ID = Integer.parseInt(messageSplit[1]);
+                   //lấy ra nickname
                     String nickname = messageSplit[2];
+                    // mở view FriendRequest
                     Client.openView(Client.View.FRIENDREQUEST, ID, nickname);
                 }
+                //đề xuất hủy chức năng này
                 //Xử lý khi nhận được yêu cầu thách đấu
                 if(messageSplit[0].equals("duel-notice")){
+                    //hiển thị hộp thoại thông báo
                     int res = JOptionPane.showConfirmDialog(Client.getVisibleJFrame(), "Bạn nhận được lời thách đấu của "+messageSplit[2]+" (ID="+messageSplit[1]+")", "Xác nhận thách đấu", JOptionPane.YES_NO_OPTION);
+                   
                     if(res == JOptionPane.YES_OPTION){
+                       //ghi ra socket thông điệp đồng ý thách đấu kèm với message 1 trả về 
                         Client.socketHandle.write("agree-duel,"+messageSplit[1]);
                     }
                     else{
+                        //ghi ra socket thông điệp hủy thách đấu
                         Client.socketHandle.write("disagree-duel,"+messageSplit[1]);
                     }
                 }
@@ -267,18 +277,20 @@ public class SocketHandle implements Runnable {
                 if(messageSplit[0].equals("caro")){
                     Client.gameClientFrm.addCompetitorMove(messageSplit[1], messageSplit[2]);
                 }
+                //gửi thông điệp chat
                 if(messageSplit[0].equals("chat")){
                     Client.gameClientFrm.addMessage(messageSplit[1]);
                 }
+                //hiển thị thông báo xin hòa
                 if(messageSplit[0].equals("draw-request")){
                     Client.gameClientFrm.showDrawRequest();
                 }
-                
+                //hiển thị thông báo từ chối hòa
                 if(messageSplit[0].equals("draw-refuse")){
                     if(Client.gameNoticeFrm!=null) Client.closeView(Client.View.GAMENOTICE);
                     Client.gameClientFrm.displayDrawRefuse();
                 }
-                
+                //tạo game mới
                 if(messageSplit[0].equals("new-game")){
                     System.out.println("New game");
                     Thread.sleep(4000);
@@ -286,24 +298,30 @@ public class SocketHandle implements Runnable {
                     Client.closeView(Client.View.GAMENOTICE);
                     Client.gameClientFrm.newgame();
                 }
+                //nếu thông báo là hòa game
                 if(messageSplit[0].equals("draw-game")){
                     System.out.println("Draw game");
                     Client.closeView(Client.View.GAMENOTICE);
                     Client.openView(Client.View.GAMENOTICE, "Ván chơi hòa", "Ván chơi mới dang được thiết lập");
                     Client.gameClientFrm.displayDrawGame();
                     Thread.sleep(4000);
+                    //update số lượt chơi game
                     Client.gameClientFrm.updateNumberOfGame();
+                    //đóng view đang load
                     Client.closeView(Client.View.GAMENOTICE);
+                    //tạo game mới
                     Client.gameClientFrm.newgame();
                 }
+                //hiển thị thông điệp nếu đối thủ quá thời gian đi cờ
                 if(messageSplit[0].equals("competitor-time-out")){
                     Client.gameClientFrm.increaseWinMatchToUser();
-                    Client.openView(Client.View.GAMENOTICE,"Bạn đã thắng do đối thủ quá thới gian","Đang thiết laapju ván chơi mới");
+                    Client.openView(Client.View.GAMENOTICE,"Bạn đã thắng do đối thủ quá thới gian","Đang thiết lập ván chơi mới");
                     Thread.sleep(4000);
                     Client.closeView(Client.View.GAMENOTICE);
                     Client.gameClientFrm.updateNumberOfGame();
                     Client.gameClientFrm.newgame();
                 }
+                //nếu message đến là thông điệp âm thanh
                 if(messageSplit[0].equals("voice-message")){
                     switch (messageSplit[1]) {
                         case "close-mic":
@@ -320,12 +338,19 @@ public class SocketHandle implements Runnable {
                             break;
                     }
                 }
+                //nếu nhận về thông điệp rời phòng
                 if(messageSplit[0].equals("left-room")){
+                    //dừng bộ đếm thời gian
                     Client.gameClientFrm.stopTimer();
+                    //đóng các view khác
                     Client.closeAllViews();
+                    //mở view thông báo
                     Client.openView(Client.View.GAMENOTICE,"Đối thủ đã thoát khỏi phòng","Đang trở về trang chủ");
-                    Thread.sleep(3000);       
+                    //luông dừng
+                    Thread.sleep(3000);    
+                    //đóng các view khác
                     Client.closeAllViews();
+                    //quay về trang chủ
                     Client.openView(Client.View.HOMEPAGE);
                 }
                 //Xử lý bị banned
@@ -348,13 +373,14 @@ public class SocketHandle implements Runnable {
             ex.printStackTrace();
         }
     }
-    
+    //ghi ra luồng, mỗi luồng sẽ ghi trên một dòng mới
     public void write(String message) throws IOException{
         os.write(message);
         os.newLine();
+       
         os.flush();
     }
-
+//lấy ra socket của client
     public Socket getSocketOfClient() {
         return socketOfClient;
     }

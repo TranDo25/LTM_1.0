@@ -53,6 +53,7 @@ public class GameClientFrm extends javax.swing.JFrame{
     private int[][] userMatrix;
     
     //if you change size you will need to redesign icon
+    //kích thước của bàn cờ
     private final int size = 15;
     // Server Socket
     //bộ đếm giờ dùng để đếm ngược 
@@ -1002,6 +1003,8 @@ public class GameClientFrm extends javax.swing.JFrame{
         String temp = jTextArea1.getText();
         temp += competitor.getNickname() + ": " + message+"\n";
         jTextArea1.setText(temp);
+        //thiết lập vị trí hiện thời của dấu nháy trong tài liệu
+        //thiết lập hoặc lấy tài liệu trong một phần văn bản
         jTextArea1.setCaretPosition(jTextArea1.getDocument().getLength());
     }
     //thêm bước di chuyển của đối thủ
@@ -1204,9 +1207,13 @@ public class GameClientFrm extends javax.swing.JFrame{
     }
     // gửi đi thông điệp nghe
     public void addVoiceMessage(String message){
+        //lấy ra text của jTextArea
         String temp = jTextArea1.getText();
+        //cộng thêm thông điệp cho temp
         temp += competitor.getNickname() + " " + message+"\n";
+        //set lại text vào area
         jTextArea1.setText(temp);
+        //cần nghiên cứu thêm
         jTextArea1.setCaretPosition(jTextArea1.getDocument().getLength());
     }
     //tạo lượt chơi mới
@@ -1244,9 +1251,13 @@ public class GameClientFrm extends javax.swing.JFrame{
     }
     //update số lượt chơi
     public void updateNumberOfGame(){
+        //cộng thêm số lượng game cho thành viên cho đối thủ
         competitor.setNumberOfGame(competitor.getNumberOfGame() + 1);
+        //hiển thị số lượt chơi
         jLabel16.setText(Integer.toString(competitor.getNumberOfGame()));
+        //cộng thêm số lượt chơi cho client
         Client.user.setNumberOfGame(Client.user.getNumberOfGame() + 1);
+        //hiển thị ra view
         jLabel13.setText(Integer.toString(Client.user.getNumberOfGame()));
     }
     //
@@ -1264,7 +1275,7 @@ public class GameClientFrm extends javax.swing.JFrame{
         timer.stop();
         setEnableButton(false);
     }
-
+//kích hoạt một ô
     public void setEnableButton(boolean b) {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {

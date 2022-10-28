@@ -24,14 +24,17 @@ public class FriendRequestFrm extends javax.swing.JFrame {
     /**
      * Creates new form FriendRequestFrm
      */
+    //thiết đặt các thông số cấu hình cho view này
     public FriendRequestFrm(int ID, String nickname) {
         this.ID = ID;
         initComponents();
         this.setTitle("Caro Game Nhóm 5");
+        //set icon
         this.setIconImage(new ImageIcon("assets/image/caroicon.png").getImage());
         this.setResizable(false);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
+        //set text nickname và ID cho JLabe7
         jLabel7.setText("Từ "+nickname +"(ID="+ID+")");
         timer = new Timer(1000, new ActionListener() {
             int count = 10;
@@ -155,7 +158,7 @@ public class FriendRequestFrm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+//ghi ra thông điệp
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             timer.stop();
