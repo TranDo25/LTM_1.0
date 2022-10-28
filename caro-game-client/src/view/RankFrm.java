@@ -49,7 +49,7 @@ public class RankFrm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
     }
-    
+    //nạp dữ liệu rank vào bảng
     public void setDataToTable(List<User> users){
         this.listUserStatics = users;
         tableModel.setRowCount(0);

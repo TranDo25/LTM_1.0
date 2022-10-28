@@ -89,11 +89,15 @@ public class FindRoomFrm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
     }
+    //bật trạng thái tìm được phòng, dừng bộ đếm thời gian tìm phòng
     public void showFindedRoom(){
         isFinded = true;
         timer.stop();
+        //hiển thị các thông điệp cần thiết
         jLabel4.setVisible(true);
         jLabel5.setVisible(true);
+        
+        //tắt các thông điệp không cần thiết đi
         jLabel2.setVisible(false);
         
     }

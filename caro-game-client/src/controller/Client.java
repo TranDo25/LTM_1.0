@@ -111,6 +111,8 @@ public class Client {
                     registerFrm.setVisible(true);
                     break;
                 case HOMEPAGE:
+                    //tạo mới một view HomePage
+                    //bật nó lên
                     homePageFrm = new HomePageFrm();
                     homePageFrm.setVisible(true);
                     break;
@@ -238,6 +240,7 @@ public class Client {
                     rankFrm.dispose();
                     break;
                 case GAMENOTICE:
+                    //hủy bỏ view này
                     gameNoticeFrm.dispose();
                     break;
                 case FRIENDREQUEST:

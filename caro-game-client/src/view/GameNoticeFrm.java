@@ -18,6 +18,8 @@ public class GameNoticeFrm extends javax.swing.JFrame {
      * Creates new form GameNoticeFrm
      */
     public GameNoticeFrm(String title, String message) {
+        //truyền vào title và message, set các label hiển thị thông tin này
+        //JLabel1 hiển thị title, JLabel3 hiển thị message, JLabel2 hiển thị icon
         initComponents();
         this.setTitle("Caro Game Nhóm 5");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

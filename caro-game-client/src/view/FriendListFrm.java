@@ -73,6 +73,7 @@ public class FriendListFrm extends javax.swing.JFrame {
         listFriend = friends;
         defaultTableModel.setRowCount(0);
         ImageIcon icon;
+        //chọn ảnh cho từng friend theo các trạng thái đang online, đang chơi và các trạng thái khác
         for(User friend : listFriend){
             if(!friend.isIsOnline()){
                 icon = new ImageIcon("assets/icon/offline.png");
@@ -83,6 +84,7 @@ public class FriendListFrm extends javax.swing.JFrame {
             else{
                 icon = new ImageIcon("assets/icon/swords-1-mini.png");
             }
+            //table hiển thị lên view sẽ nạp vào danh sách bạn bè bao gồm thông tin, nickname, icon
             defaultTableModel.addRow(new Object[]{
                 ""+friend.getID(),
                 friend.getNickname(),

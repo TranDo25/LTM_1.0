@@ -63,10 +63,13 @@ public class RoomListFrm extends javax.swing.JFrame {
         defaultTableModel.setRowCount(0);
         ImageIcon imageIcon;
         for(int i=0; i<listRoom.size(); i++){
+            //nếu password không có thì icon sẽ là kiểu khác
             if(listPassword.get(i).equals(" "))
                 imageIcon = new ImageIcon("assets/icon/swords-1-mini.png");
             else
+                //và ngược lại
                 imageIcon = new ImageIcon("assets/icon/swords-1-lock-mini.png");
+            //table sẽ add hàng theo danh sách hàng và icon image
             defaultTableModel.addRow(new Object[]{
                 listRoom.get(i),
                 imageIcon

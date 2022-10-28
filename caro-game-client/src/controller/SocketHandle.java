@@ -26,6 +26,7 @@ public class SocketHandle implements Runnable {
     private BufferedReader is;
     private Socket socketOfClient;
     private int ID_Server;
+    //lấy ra danh sách bạn bè theo thông điệp
     public List<User> getListUser(String[] message){
         List<User> friend = new ArrayList<>();
         for(int i=1; i<message.length; i=i+4){
@@ -37,6 +38,7 @@ public class SocketHandle implements Runnable {
         return friend;
     }
     public List<User> getListRank(String[] message){
+        //trả về một danh sách bạn bè từ thông tin message được truyền vào
         List<User> friend = new ArrayList<>();
         for(int i=1; i<message.length; i=i+9){
             friend.add(new User(Integer.parseInt(message[i]),
@@ -52,6 +54,7 @@ public class SocketHandle implements Runnable {
         return friend;
     }
     public User getUserFromString(int start, String[] message){
+        //trả về một user mới được tạo thành từ các thông tin gửi kèm từ thông điệp
         return new User(Integer.parseInt(message[start]),
                 message[start+1],
                 message[start+2],
@@ -64,27 +67,33 @@ public class SocketHandle implements Runnable {
     }
     @Override
     public void run() {
-
+ 
         try {
             // Gửi yêu cầu kết nối tới Server đang lắng nghe
-            socketOfClient = new Socket("192.168.0.102", 7777);
+            socketOfClient = new Socket("127.0.0.1", 7777);
             System.out.println("Kết nối thành công!");
             // Tạo luồng đầu ra tại client (Gửi dữ liệu tới server)
             os = new BufferedWriter(new OutputStreamWriter(socketOfClient.getOutputStream()));
             // Luồng đầu vào tại Client (Nhận dữ liệu từ server).
             is = new BufferedReader(new InputStreamReader(socketOfClient.getInputStream()));
+            //từ socket sẽ lấy ra message để xử lý
             String message;
             while (true) {
                 //đọc chuỗi thông điệp từ socket
                 message = is.readLine();
+                //nếu chuỗi null, dừng vòng lặp while
                 if (message == null) {
                     break;
                 }
+                //chia tách chuỗi bằng dấu phẩy
                 String[] messageSplit = message.split(",");
+                //nếu message = server-send-id, nhận ID_Server từ phần tử cắt chuỗi thứ 2
                 if(messageSplit[0].equals("server-send-id")){
                     ID_Server = Integer.parseInt(messageSplit[1]);
                 }
                 //Đăng nhập thành công
+                //nếu message thứ nhất = login-success, in ra thông báo, đóng các view khác, tạo ra user từ 
+                //message server gửi đến, gán user cho đối tượng Client, mở view Client HomePage
                 if(messageSplit[0].equals("login-success")){
                     System.out.println("Đăng nhập thành công");
                     Client.closeAllViews();
@@ -93,6 +102,8 @@ public class SocketHandle implements Runnable {
                     Client.openView(Client.View.HOMEPAGE);
                 }
                 //Thông tin tài khoản sai
+                //nếu message trả về là wrong-user, đóng view thông báo,mở view đăng nhập, in ra tài khoản đăng nhập không 
+                //chính xác
                 if(messageSplit[0].equals("wrong-user")){
                     System.out.println("Thông tin sai");
                     Client.closeView(Client.View.GAMENOTICE);
@@ -100,6 +111,7 @@ public class SocketHandle implements Runnable {
                     Client.loginFrm.showError("Tài khoản hoặc mật khẩu không chính xác");
                 }
                 //Tài khoản đã đăng nhập ở nơi khác
+                //hoạt động tương tự bên trên
                 if(messageSplit[0].equals("dupplicate-login")){
                     System.out.println("Đã đăng nhập");
                     Client.closeView(Client.View.GAMENOTICE);
@@ -107,12 +119,15 @@ public class SocketHandle implements Runnable {
                     Client.loginFrm.showError("Tài khoản đã đăng nhập ở nơi khác");
                 }
                 //Tài khoản đã bị banned
+                //hoạt động tương tự bên trên
                 if(messageSplit[0].equals("banned-user")){
+                    //viewNOTICE có tác dụng hiên thị thông báo đợi 
                     Client.closeView(Client.View.GAMENOTICE);
                     Client.openView(Client.View.LOGIN,messageSplit[1],messageSplit[2]);
                     Client.loginFrm.showError("Tài khoản đã bị ban");
                 }
                 //Xử lý register trùng tên
+                
                 if(messageSplit[0].equals("duplicate-username")){
                     Client.closeAllViews();
                     Client.openView(Client.View.REGISTER);
@@ -151,6 +166,7 @@ public class SocketHandle implements Runnable {
                 //Xử lý xem rank
                 if(messageSplit[0].equals("return-get-rank-charts")){
                     if(Client.rankFrm!=null){
+                        //nạp rank vào để Frm xử lí
                         Client.rankFrm.setDataToTable(getListRank(messageSplit));
                     }
                 }
@@ -159,31 +175,45 @@ public class SocketHandle implements Runnable {
                     Vector<String> rooms = new Vector<>();
                     Vector<String> passwords = new Vector<>();
                     for(int i=1; i<messageSplit.length; i=i+2){
+                        //tạo vector để chứa danh sách phòng
                         rooms.add("Phòng "+messageSplit[i]);
+                        //tạo vector để đựng password chứa trong chuỗi thứ 2
                         passwords.add(messageSplit[i+1]);
                     }
                     Client.roomListFrm.updateRoomList(rooms,passwords);
                 }
+                
+                //lấy ra danh sách bạn bè
                 if(messageSplit[0].equals("return-friend-list")){
                     if(Client.friendListFrm!=null){
+                        //nạp danh sách bạn bè vào Frm
                         Client.friendListFrm.updateFriendList(getListUser(messageSplit));
                     }
                 }
+                //xử lí thông điệp go-to-room
                 if(messageSplit[0].equals("go-to-room")){
                     System.out.println("Vào phòng");
+                    //lấy ra roomIF từ chuỗi message chia tách phần tử thứ 2
                     int roomID = Integer.parseInt(messageSplit[1]);
+                    //lấy ra địa chỉ IP là phần tử thứ 3 của chuỗi
                     String competitorIP = messageSplit[2];
+                    //lấy ra trạng thái của user đã bắt đầu hay chưa
                     int isStart = Integer.parseInt(messageSplit[3]);
-                    
+                    //lấy ra đối thủ bắt đầu từ vị trí thứ 4 của chuỗi chia tách
                     User competitor = getUserFromString(4, messageSplit);
+                    //nếu có phòng, hiển thị danh sách phòng
                     if(Client.findRoomFrm!=null){
+                        //hiển thi hộp thoại thông báo đã tìm thấy phòng
                         Client.findRoomFrm.showFindedRoom();
                         try {
+                            //dừng luồng lại trong khoảng 30s
                             Thread.sleep(3000);
                         } catch (InterruptedException ex) {
+                            //chưa hiểu cơ chế này
                             JOptionPane.showMessageDialog(Client.findRoomFrm, "Lỗi khi sleep thread");
                         }
-                    } else if(Client.waitingRoomFrm!=null){
+                    }//hiển thị thông tin tìm thấy đối thủ
+                    else if(Client.waitingRoomFrm!=null){
                         Client.waitingRoomFrm.showFindedCompetitor();
                         try {
                             Thread.sleep(3000);
@@ -192,8 +222,10 @@ public class SocketHandle implements Runnable {
                         }
                     }
                     Client.closeAllViews();
+                    //sau khi xử lí hết bên trên, in ra thông điệp vào phòng
                     System.out.println("Đã vào phòng: "+roomID);
                     //Xử lý vào phòng
+                    //mở view game client lên
                     Client.openView(Client.View.GAMECLIENT
                             , competitor
                             , roomID

@@ -55,6 +55,7 @@ public class GameClientFrm extends javax.swing.JFrame{
     //if you change size you will need to redesign icon
     private final int size = 15;
     // Server Socket
+    //bộ đếm giờ dùng để đếm ngược 
     private Timer timer;
     private Integer second, minute;
     
@@ -984,11 +985,12 @@ public class GameClientFrm extends javax.swing.JFrame{
         timerjLabel19.setVisible(false);
         compretitorTurnJLabel.setVisible(false);
         jLabel5.setVisible(false);
+        //hiển thị label: "đến lượt bạn bắt đấu"
         yourTurnJLabel3.setVisible(true);
         jButton2.setVisible(true);
         jLabel3.setVisible(true);
     }
-    //bắt đầu đếm giờ
+    //bắt đầu đếm giờ 60s đếm ngược để tính thời gian nước đi
     public void startTimer(){
         timerjLabel19.setVisible(true);
         second = 60;
@@ -1209,9 +1211,10 @@ public class GameClientFrm extends javax.swing.JFrame{
     }
     //tạo lượt chơi mới
     public void newgame() {
-        
+        //nếu số lần chơi là chẵn, client di trước
         if (numberOfMatch % 2 == 0) {
             JOptionPane.showMessageDialog(rootPane, "Đến lượt bạn đi trước");
+            //bắt đầu đếm ngược trong thời gian đối thủ đi
             startTimer();
             displayUserTurn();
             timerjLabel19.setVisible(true);

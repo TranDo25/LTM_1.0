@@ -43,7 +43,7 @@ public class WaitingRoomFrm extends javax.swing.JFrame {
         jLabel4.setText(password);
         jLabel4.setVisible(true);
     }
-    
+    //thiết lập view với các thông tin cần thiết để hiển thị đã tìm thấy đối thủ
     public void showFindedCompetitor(){
         isOpenning = true;
         jLabel2.setText("Đã tìm thấy đối thủ, đang vào phòng");
