@@ -122,17 +122,18 @@ public class CreateRoomPasswordFrm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+//xử lí nút cancel
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Client.closeView(Client.View.CREATEROOMPASSWORD);
         Client.openView(Client.View.HOMEPAGE);
     }//GEN-LAST:event_jButton1ActionPerformed
-
+//xử lí nút OK
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             String password = jTextField1.getText();
             if(password.isEmpty())
                 throw new Exception("Vui lòng nhập mật khẩu bạn muốn đặt cho phòng");
+            //lấy xong mật khảu, gửi ra socket để tạo phòng kèm mật khẩu
             Client.socketHandle.write("create-room,"+password);
             Client.closeView(Client.View.CREATEROOMPASSWORD);
         } catch (IOException ex) {

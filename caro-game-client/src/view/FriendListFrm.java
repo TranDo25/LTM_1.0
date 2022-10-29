@@ -49,15 +49,15 @@ public class FriendListFrm extends javax.swing.JFrame {
         thread = new Thread() {
             @Override
             public void run() {
-                while (Client.friendListFrm.isDisplayable()&&!isClicked) {
-                    try {
-                        System.out.println("Xem danh sách bạn bè đang chạy!");
-                        requestUpdate();
-                        Thread.sleep(500);
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }
-                }
+//                while (Client.friendListFrm.isDisplayable()&&!isClicked) {
+//                    try {
+//                        System.out.println("Xem danh sách bạn bè đang chạy!");
+//                        requestUpdate();
+//                        Thread.sleep(500);
+//                    } catch (InterruptedException ex) {
+//                        ex.printStackTrace();
+//                    }
+//                }
             }
         };
         thread.start();

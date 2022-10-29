@@ -18,6 +18,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  *
  * @author Admin
  */
+//đây là view sau khi đã tìm thấy đối thủ thành công
 public class WaitingRoomFrm extends javax.swing.JFrame {
     private boolean isOpenning;
     /**
@@ -25,8 +26,9 @@ public class WaitingRoomFrm extends javax.swing.JFrame {
      */
     public WaitingRoomFrm() {
         initComponents();
-        this.setTitle("Caro Game by Ju");
+        this.setTitle("Caro Game by Team 5");
         isOpenning = false;
+        //đổi hình ảnh nền là caro icon
         this.setIconImage(new ImageIcon("assets/image/caroicon.png").getImage());
         this.setResizable(false);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -39,7 +41,7 @@ public class WaitingRoomFrm extends javax.swing.JFrame {
     public void setRoomName(String roomName){
         jLabel1.setText("Phòng "+roomName);
     }
-    
+    //thiết lập password cho view
     public void setRoomPassword(String password){
         jLabel4.setText(password);
         jLabel4.setVisible(true);
@@ -147,6 +149,7 @@ public class WaitingRoomFrm extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if(isOpenning) return;
         try {
+            //hủy phòng
             Client.closeView(Client.View.WAITINGROOM);
             Client.openView(Client.View.HOMEPAGE);
             Client.socketHandle.write("cancel-room,");

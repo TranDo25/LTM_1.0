@@ -26,6 +26,9 @@ public class HomePageFrm extends javax.swing.JFrame {
      */
     public HomePageFrm() {
         initComponents();
+        //chỗ này có chỉnh sửa
+        //đóng view GAMENOTICE
+        Client.closeView(Client.View.GAMENOTICE);
         this.setTitle("Caro Game Nhóm 5");
         this.setIconImage(new ImageIcon("assets/image/caroicon.png").getImage());
         this.setResizable(false);
@@ -391,11 +394,12 @@ public class HomePageFrm extends javax.swing.JFrame {
     private void jLabel1AncestorMoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jLabel1AncestorMoved
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel1AncestorMoved
-
+//bấm vào nút tạo phòng
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int res = JOptionPane.showConfirmDialog(rootPane, "Bạn có muốn đặt mật khẩu cho phòng không?", "Tạo phòng", JOptionPane.YES_NO_OPTION);
         if(res==JOptionPane.YES_OPTION){
             Client.closeView(Client.View.HOMEPAGE);
+            //với trường hợp tạo phòng có mật khẩu, mở view tạo mật khẩu để nhập password
             Client.openView(Client.View.CREATEROOMPASSWORD);
         }
         else if(res==JOptionPane.NO_OPTION){

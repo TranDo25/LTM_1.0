@@ -144,12 +144,12 @@ public class SocketHandle implements Runnable {
                         Client.homePageFrm.addMessage(messageSplit[1]);
                     }
                 }
-                //Xử lý hiển thị thông tin đối thủ là bạn bè/không
-                if(messageSplit[0].equals("check-friend-response")){
-                    if(Client.competitorInfoFrm!=null){
-                        Client.competitorInfoFrm.checkFriend((messageSplit[1].equals("1")));
-                    }
-                }
+                //Xử lý hiển thị thông tin đối thủ là bạn bè không
+//                if(messageSplit[0].equals("check-friend-response")){
+//                    if(Client.competitorInfoFrm!=null){
+//                        Client.competitorInfoFrm.checkFriend((messageSplit[1].equals("1")));
+//                    }
+//                }
                 //Xử lý kết quả tìm phòng từ server
                 if(messageSplit[0].equals("room-fully")){
                     Client.closeAllViews();
@@ -169,12 +169,12 @@ public class SocketHandle implements Runnable {
                     JOptionPane.showMessageDialog(Client.homePageFrm, "Mật khẩu phòng sai");
                 }
                 //Xử lý xem rank
-                if(messageSplit[0].equals("return-get-rank-charts")){
-                    if(Client.rankFrm!=null){
-                        //nạp rank vào để Frm xử lí
-                        Client.rankFrm.setDataToTable(getListRank(messageSplit));
-                    }
-                }
+//                if(messageSplit[0].equals("return-get-rank-charts")){
+//                    if(Client.rankFrm!=null){
+//                        //nạp rank vào để Frm xử lí
+//                        Client.rankFrm.setDataToTable(getListRank(messageSplit));
+//                    }
+//                }
                 //Xử lý lấy danh sách phòng
                 if(messageSplit[0].equals("room-list")){
                     Vector<String> rooms = new Vector<>();
@@ -189,12 +189,12 @@ public class SocketHandle implements Runnable {
                 }
                 
                 //lấy ra danh sách bạn bè
-                if(messageSplit[0].equals("return-friend-list")){
-                    if(Client.friendListFrm!=null){
-                        //nạp danh sách bạn bè vào Frm
-                        Client.friendListFrm.updateFriendList(getListUser(messageSplit));
-                    }
-                }
+//                if(messageSplit[0].equals("return-friend-list")){
+//                    if(Client.friendListFrm!=null){
+//                        //nạp danh sách bạn bè vào Frm
+//                        Client.friendListFrm.updateFriendList(getListUser(messageSplit));
+//                    }
+//                }
                 //xử lí thông điệp go-to-room
                 if(messageSplit[0].equals("go-to-room")){
                     System.out.println("Vào phòng");
@@ -241,6 +241,7 @@ public class SocketHandle implements Runnable {
                 }
                 //Tạo phòng và server trả về tên phòng
                 if(messageSplit[0].equals("your-created-room")){
+                    //sau khi nhận thông điệp trả về, mở view WatingRoom lên
                     Client.closeAllViews();
                     Client.openView(Client.View.WAITINGROOM);
                     Client.waitingRoomFrm.setRoomName(messageSplit[1]);

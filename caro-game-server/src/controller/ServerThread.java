@@ -245,10 +245,13 @@ public class ServerThread implements Runnable {
                 }
 //===========================================================================================================================
                 //Xử lý tạo phòng
+                //server sẽ tạo ra đối tượng phòng, gửi về roomID cho client
                 if (messageSplit[0].equals("create-room")) {
                     room = new Room(this);
                     if (messageSplit.length == 2) {
                         room.setPassword(messageSplit[1]);
+                        
+                        //trả về cho client ID và password
                         write("your-created-room," + room.getID() + "," + messageSplit[1]);
                         System.out.println("Tạo phòng mới thành công, password là " + messageSplit[1]);
                     } else {
