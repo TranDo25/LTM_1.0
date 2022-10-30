@@ -9,21 +9,21 @@ package controller;
 import javax.swing.JFrame;
 import model.User;
 import view.CompetitorInfoFrm;
-import view.CreateRoomPasswordFrm;
-import view.FindRoomFrm;
+import view.giulai.CreateRoomPasswordFrm;
+import view.giulai.FindRoomFrm;
 import view.FriendListFrm;
 import view.FriendRequestFrm;
-import view.GameClientFrm;
-import view.GameNoticeFrm;
+import view.giulai.GameClientFrm;
+import view.giulai.GameNoticeFrm;
 import view.GameAIFrm;
-import view.HomePageFrm;
-import view.JoinRoomPasswordFrm;
-import view.LoginFrm;
+import view.giulai.HomePageFrm;
+import view.giulai.JoinRoomPasswordFrm;
+import view.giulai.LoginFrm;
 import view.RankFrm;
-import view.RegisterFrm;
-import view.RoomListFrm;
-import view.RoomNameFrm;
-import view.WaitingRoomFrm;
+import view.giulai.RegisterFrm;
+import view.giulai.RoomListFrm;
+import view.giulai.RoomNameFrm;
+import view.giulai.WaitingRoomFrm;
 
 /**
  *
