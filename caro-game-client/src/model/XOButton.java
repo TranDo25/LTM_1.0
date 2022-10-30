@@ -32,7 +32,7 @@ public class XOButton extends JButton {
 		this.point = new Point(x, y);
                 XOButton _this = this;
 		this.addMouseListener( new MouseListener() {
-
+                    //xử lí khi chuột được nhấn trên một thành phần
                     @Override
                     public void mouseReleased(MouseEvent e) {
                         // TODO Auto-generated method stub
@@ -43,11 +43,13 @@ public class XOButton extends JButton {
                         // TODO Auto-generated method stub
 
                     }
-
+                    //khi con trỏ chuột không trỏ vào đối tượng nữa, lập tức chuyển thành 
+                    //ô trống
                     @Override
                     public void mouseExited(MouseEvent e) {
                         if(_this.isEnabled()){
                             _this.setBackground(null);
+                            //nếu chuột thoát ra khỏi phạm vi ô, chuyển ô về blank
                             _this.setIcon(new ImageIcon("assets/image/blank.jpg"));
                         }
                     }
@@ -56,10 +58,11 @@ public class XOButton extends JButton {
                     public void mouseEntered(MouseEvent e) {
                         if(_this.isEnabled()) {
                             _this.setBackground(Color.GREEN);
+                            //đánh dấu x
                             _this.setIcon(new ImageIcon("assets/image/x3.jpg"));
                         }
                     }
-
+                    //xử lí khi click chuột
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         // TODO Auto-generated method stub
@@ -67,7 +70,7 @@ public class XOButton extends JButton {
                     }
                 });
 	}
-	
+	//kiểm tra trạng thái đánh là X hay O
 	public void setState(Boolean isXMove) {
 		if (isXMove) {
 			setIcon(X);
@@ -81,6 +84,7 @@ public class XOButton extends JButton {
 			XOButton.isXMove = true;
 		}
 	}
+        //trả lại các trạng thái 
         public void resetState(){
             value = 0;
             this.setEnabled(true);

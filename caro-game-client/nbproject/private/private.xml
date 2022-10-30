@@ -4,19 +4,22 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/view/FriendListFrm.java</file>
-            <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/view/giulai/FindRoomFrm.java</file>
-            <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/view/GameAIFrm.java</file>
             <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/view/giulai/JoinRoomPasswordFrm.java</file>
             <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/controller/Client.java</file>
-            <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/view/giulai/RoomNameFrm.java</file>
+            <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/model/XOButton.java</file>
             <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/controller/SocketHandle.java</file>
             <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/view/giulai/LoginFrm.java</file>
+            <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/controller/CaroActionListener.java</file>
             <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/view/giulai/WaitingRoomFrm.java</file>
             <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/view/giulai/CreateRoomPasswordFrm.java</file>
+            <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/model/User.java</file>
+            <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/view/RankFrm.java</file>
             <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/view/giulai/HomePageFrm.java</file>
             <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/view/FriendRequestFrm.java</file>
+            <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/model/Point.java</file>
             <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/view/CompetitorInfoFrm.java</file>
             <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/view/giulai/GameClientFrm.java</file>
+            <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/view/giulai/GameAIFrm.java</file>
             <file>file:/D:/GitHubProject/LTM_1.0/caro-game-client/src/view/giulai/RoomListFrm.java</file>
         </group>
     </open-files>

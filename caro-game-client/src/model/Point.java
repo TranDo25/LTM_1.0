@@ -12,8 +12,9 @@ public class Point {
 		this.x = x;
 		this.y = y;
 	}
-	
+	//
 	public Point findStartXPoint() {
+            //khởi tạo điểm bắt đầu x. kích thước ô là 15
 		int startX = x - 5 < 0 ? 0 : x - 5;
 		return new Point(startX, y);
 	}
@@ -51,6 +52,7 @@ public class Point {
 	}
 	
 	public void log() {
+                System.out.println("đây là tọa độ của điểm vừa bấm");
 		System.out.println("x: "+ this.x + "| y: " + this.y);
 	}
 }

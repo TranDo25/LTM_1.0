@@ -15,7 +15,7 @@ import view.FriendListFrm;
 import view.FriendRequestFrm;
 import view.giulai.GameClientFrm;
 import view.giulai.GameNoticeFrm;
-import view.GameAIFrm;
+import view.giulai.GameAIFrm;
 import view.giulai.HomePageFrm;
 import view.giulai.JoinRoomPasswordFrm;
 import view.giulai.LoginFrm;
@@ -67,7 +67,7 @@ public class Client {
 //    public static RankFrm rankFrm;
     public static GameNoticeFrm gameNoticeFrm;
 //    public static FriendRequestFrm friendRequestFrm;
-//    public static GameAIFrm gameAIFrm;
+    public static GameAIFrm gameAIFrm;
     public static RoomNameFrm roomNameFrm;
     //Thiết lập socket để gửi dữ liệu qua cho server
     public static SocketHandle socketHandle;
@@ -144,10 +144,10 @@ public class Client {
 //                    rankFrm = new RankFrm();
 //                    rankFrm.setVisible(true);
 //                    break;
-//                case GAMEAI:
-//                    gameAIFrm = new GameAIFrm();
-//                    gameAIFrm.setVisible(true);
-//                    break;
+                case GAMEAI:
+                    gameAIFrm = new GameAIFrm();
+                    gameAIFrm.setVisible(true);
+                    break;
                 case ROOMNAMEFRM:
                     roomNameFrm = new RoomNameFrm();
                     roomNameFrm.setVisible(true);
@@ -249,9 +249,9 @@ public class Client {
 //                case FRIENDREQUEST:
 //                    friendRequestFrm.dispose();
 //                    break;
-//                case GAMEAI:
-//                    gameAIFrm.dispose();
-//                    break;
+                case GAMEAI:
+                    gameAIFrm.dispose();
+                    break;
                 case ROOMNAMEFRM:
                     roomNameFrm.dispose();
                     break;
